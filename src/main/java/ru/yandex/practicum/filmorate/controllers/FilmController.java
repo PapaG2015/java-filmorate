@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.IdException;
@@ -9,6 +10,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -16,15 +18,17 @@ import java.util.*;
 
 @RestController
 @Data
+@Slf4j
+@RequestMapping("/films")
 public class FilmController {
     private static int count = 0;
 
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
+    //private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     private Map<Integer, Film> films = new HashMap<>();
     private List<Film> filmsList = new ArrayList<>();
 
-    @GetMapping("/films")
+    @GetMapping
     public List<Film> getAllFilms() {
         for (Integer i : films.keySet()) {
             filmsList.add(films.get(i));
@@ -34,7 +38,7 @@ public class FilmController {
 
     //POST
     //если такой film уже существует, то сервер вернёт ошибку
-    @PostMapping("/films")
+    @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) throws SimilarException, ValidationException {
         validate(film);
 
@@ -62,8 +66,8 @@ public class FilmController {
 
     //PUT
     //Если же такого film на сервере нет, то он будет добавлен.
-    @PutMapping("/films")
-    public Film changeFilm(@RequestBody Film film) throws SimilarException, ValidationException, IdException {
+    @PutMapping
+    public Film changeFilm(@Valid @RequestBody Film film) throws SimilarException, ValidationException, IdException {
         validate(film);
 
         int id = film.getId();
@@ -98,6 +102,12 @@ public class FilmController {
     public String handleException(IdException e) {
         return e.getMessage();
     }
+
+    /*@ExceptionHandler(MethodArgumentNotValidException.class)
+    public String handleException(MethodArgumentNotValidException e) {
+        return e.getMessage();
+    }*/
+
 
     private void validate(Film film) throws ValidationException {
         String s;

@@ -4,20 +4,24 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.LocalDate;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
 public class Film {
     private int id;
+    @NotBlank
     private String name;
-    @NotNull
+    @Size(max=200)
     private String description;
     private LocalDate releaseDate;
+    @Positive
     private long duration;
 
     /*public void setDuration(long duration) {
