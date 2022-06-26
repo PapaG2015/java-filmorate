@@ -14,35 +14,28 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     private Map<Integer, Film> films = new HashMap<>();
     private Set<Film> filmSet = new TreeSet<>((f1, f2) -> {
-        /*if (f1.getLikes() == null & f2.getLikes() == null) return 1;
-        if (f1.getLikes() == null & f2.getLikes() != null) return 1;
-        if (f1.getLikes() != null & f2.getLikes() == null) return -1;
-
-        return -( f1.getLikes().size() - f2.getLikes().size() );*/
-
-        //System.out.println(f1.getId() == f2.getId());
         if (f1.getId() == f2.getId()) return 0;
         else if (f1.getRate() == f2.getRate()) return -1;
         else return -(f1.getRate() - f2.getRate());
     });
 
     @Override
-    public Film getFilm(int id) {
+    public Film get(int id) {
         return films.get(id);
     }
 
     @Override
-    public Collection<Film> getAllFilms() {
+    public Collection<Film> getAll() {
         return films.values();
     }
 
     @Override
-    public Set<Film> getAllFilmsByRating() {
+    public Set<Film> getAllByRating() {
         return filmSet;
     }
 
     @Override
-    public Film createFilm(Film film) {
+    public Film create(Film film) {
 
         int id = film.getId();
 
@@ -62,7 +55,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film changeFilm(Film film) {
+    public Film change(Film film) {
 
         int id = film.getId();
 
@@ -74,7 +67,15 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.info("Film changing: OK");
             return films.get(id);
         } else {
-            return createFilm(film);
+            return create(film);
         }
+    }
+
+    @Override
+    public void delete(Film film) {
+        int id = film.getId();
+
+        films.remove(id);
+        filmSet.remove(film);
     }
 }

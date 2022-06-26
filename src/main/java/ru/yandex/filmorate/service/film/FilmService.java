@@ -20,26 +20,20 @@ public class FilmService {
 
 
     public void toLike(int filmID, int userID) {
-        Film film = filmStorage.getFilm(filmID);
+        Film film = filmStorage.get(filmID);
         film.getLikes().add(userID);
         film.setRate(film.getRate() + 1);
-        filmStorage.changeFilm(film);
+        filmStorage.change(film);
     }
 
     public void toDislike(int filmID, int userID) {
-        Film film = filmStorage.getFilm(filmID);
+        Film film = filmStorage.get(filmID);
         film.getLikes().remove(userID);
         film.setRate(film.getRate() - 1);
-        filmStorage.changeFilm(film);
+        filmStorage.change(film);
     }
 
     public List<Film> getRating(int filmAmount) {
-        /*if (filmStorage.getAllFilmsByRating().size() <= 10) {
-            return filmStorage.getAllFilmsByRating();
-        }
-        else {
-        }*/
-
-        return filmStorage.getAllFilmsByRating().stream().limit(filmAmount).collect(Collectors.toList());
+        return filmStorage.getAllByRating().stream().limit(filmAmount).collect(Collectors.toList());
     }
 }

@@ -7,14 +7,16 @@ import java.util.Set;
 
 public interface FilmStorage {
 
-    Film getFilm(int id);
+    Film get(int id);
 
-    Collection<Film> getAllFilms();
+    Collection<Film> getAll();
 
-    Set<Film> getAllFilmsByRating();
+    Set<Film> getAllByRating();
 
-    Film createFilm(Film film);
+    Film create(Film film);
 
-    Film changeFilm(Film film);
+    Film change(Film film);
+
+    void delete(Film film);
 
 }

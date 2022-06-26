@@ -28,36 +28,46 @@ public class FilmController {
 
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable("id") int id) {
-        if (id <= 0) throw new IdException("ID must be > 0");
-        else return filmStorage.getFilm(id);
+        if (id <= 0) {
+            log.error("ID must be > 0");
+            throw new IdException("ID must be > 0");
+        } else {
+            log.info("Get film: OK");
+            return filmStorage.get(id);
+        }
     }
 
     //пользователь ставит лайк фильму
     @PutMapping("/{id}/like/{userId}")
     public Film toLike(@PathVariable("id") int id, @PathVariable("userId") int userId) {
         filmService.toLike(id, userId);
-        return filmStorage.getFilm(id);
+        log.info("Like film: OK");
+        return filmStorage.get(id);
     }
 
     // пользователь удаляет лайк
     @DeleteMapping("/{id}/like/{userId}")
     public Film toDislike(@PathVariable("id") int id, @PathVariable("userId") int userId) {
-        if (userId <= 0) throw new IdException("ID must be > 0");
-
-        else {
+        if (userId <= 0) {
+            log.error("ID must be > 0");
+            throw new IdException("ID must be > 0");
+        } else {
             filmService.toDislike(id, userId);
-            return filmStorage.getFilm(id);
+            log.info("Delete like film: OK");
+            return filmStorage.get(id);
         }
     }
 
     @GetMapping
     public Collection<Film> getAllFilms() {
-        return filmStorage.getAllFilms();
+        log.info("Get all films: OK");
+        return filmStorage.getAll();
     }
 
     //возвращает список из первых count фильмов по количеству лайков
     @GetMapping("/popular")
     public List<Film> getRating(@RequestParam(required = false, name = "count", defaultValue = "10") int count) {
+        log.info("Get popular films: OK");
         return filmService.getRating(count);
     }
 
@@ -66,8 +76,8 @@ public class FilmController {
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
         filmValidate(film);
-
-        return filmStorage.createFilm(film);
+        log.info("Create film: OK");
+        return filmStorage.create(film);
     }
 
     //PUT
@@ -75,19 +85,21 @@ public class FilmController {
     @PutMapping
     public Film changeFilm(@Valid @RequestBody Film film) {
         filmValidate(film);
-
-        return filmStorage.changeFilm(film);
+        log.info("Chanhe film: OK");
+        return filmStorage.change(film);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleIdException(IdException e) {
+        log.error(e.getMessage());
         return e.getMessage();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleReleaseDateException(DateException e) {
+        log.error(e.getMessage());
         return e.getMessage();
     }
 
@@ -101,6 +113,7 @@ public class FilmController {
         }
 
         if (film.getId() < 0) {
+            log.error("ID < 0");
             throw new IdException("ID < 0");
         }
     }

@@ -17,17 +17,17 @@ public class InMemoryUserStorage implements UserStorage {
     private Map<Integer, User> users = new HashMap<>();
 
     @Override
-    public User getUser(int id) {
+    public User get(int id) {
         return users.get(id);
     }
 
     @Override
-    public Collection<User> getAllUsers() {
+    public Collection<User> getAll() {
         return users.values();
     }
 
     @Override
-    public User createUser(User user) {
+    public User create(User user) {
 
         int id = user.getId();
 
@@ -46,7 +46,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User changeUser(User user) {
+    public User change(User user) {
 
         int id = user.getId();
 
@@ -56,7 +56,13 @@ public class InMemoryUserStorage implements UserStorage {
             return users.get(id);
         }
         else {
-            return createUser(user);
+            return create(user);
         }
+    }
+
+    @Override
+    public void delete(User user) {
+        int id = user.getId();
+        users.remove(id);
     }
 }

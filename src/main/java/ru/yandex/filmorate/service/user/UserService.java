@@ -19,19 +19,19 @@ public class UserService {
     private UserStorage userStorage;
 
     public void addFriend(int id, int friendId) {
-        userStorage.getUser(id).getFriends().add(friendId);
-        userStorage.getUser(friendId).getFriends().add(id);
+        userStorage.get(id).getFriends().add(friendId);
+        userStorage.get(friendId).getFriends().add(id);
     }
 
     public void deleteFriend(int id, int friendId) {
-        userStorage.getUser(id).getFriends().remove(friendId);
-        userStorage.getUser(friendId).getFriends().remove(id);
+        userStorage.get(id).getFriends().remove(friendId);
+        userStorage.get(friendId).getFriends().remove(id);
     }
 
     public List<User> getMyFriends(int id) {
         List<User> myFriends = new ArrayList<>();
-        for (int i : userStorage.getUser(id).getFriends()) {
-            myFriends.add(userStorage.getUser(i));
+        for (int i : userStorage.get(id).getFriends()) {
+            myFriends.add(userStorage.get(i));
         }
         return myFriends;
     }
@@ -40,9 +40,9 @@ public class UserService {
         List<User> commonFriends = new ArrayList<>();
 
         try {
-            userStorage.getUser(id).getFriends().stream().filter(friendID ->
-                    userStorage.getUser(otherId).getFriends().contains(friendID)).forEach(friendID ->
-                    commonFriends.add(userStorage.getUser(friendID)));
+            userStorage.get(id).getFriends().stream().filter(friendID ->
+                    userStorage.get(otherId).getFriends().contains(friendID)).forEach(friendID ->
+                    commonFriends.add(userStorage.get(friendID)));
 
             return commonFriends;
         } catch (NullPointerException e) {

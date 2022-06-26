@@ -29,17 +29,25 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable("id") int id) {
-        if (id <= 0) throw new IdException("ID must be > 0");
-        else return userStorage.getUser(id);
+        if (id <= 0) {
+            log.error("ID must be > 0");
+            throw new IdException("ID must be > 0");
+        } else {
+            log.info("Get film: OK");
+            return userStorage.get(id);
+        }
     }
 
     //добавление в друзья
     @PutMapping("/{id}/friends/{friendId}")
     public User addFriend(@PathVariable("id") int id, @PathVariable("friendId") int friendId) {
-        if (friendId <= 0) throw new IdException("ID must be > 0");
-        else {
+        if (friendId <= 0) {
+            log.error("ID must be > 0");
+            throw new IdException("ID must be > 0");
+        } else {
             userService.addFriend(id, friendId);
-            return userStorage.getUser(id);
+            log.info("Add friend: OK");
+            return userStorage.get(id);
         }
     }
 
@@ -47,24 +55,28 @@ public class UserController {
     @DeleteMapping("/{id}/friends/{friendId}")
     public User deleteFriend(@PathVariable("id") int id, @PathVariable("friendId") int friendId) {
         userService.deleteFriend(id, friendId);
-        return userStorage.getUser(id);
+        log.info("Delete friend: OK");
+        return userStorage.get(id);
     }
 
     //возвращаем список пользователей, являющихся его друзьями
     @GetMapping("/{id}/friends")
     public List<User> getMyFriends(@PathVariable("id") int id) {
+        log.info("Get my friends: OK");
         return userService.getMyFriends(id);
     }
 
     //список друзей, общих с другим пользователем
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable("id") int id, @PathVariable("otherId") int otherId) {
+        log.info("Get common friends: OK");
         return userService.getCommonFriends(id, otherId);
     }
 
     @GetMapping
     public Collection<User> getAllUsers() {
-        return userStorage.getAllUsers();
+        log.info("Get all users: OK");
+        return userStorage.getAll();
     }
 
     //POST
@@ -72,8 +84,8 @@ public class UserController {
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         userValidate(user);
-
-        return userStorage.createUser(user);
+        log.info("Create user: OK");
+        return userStorage.create(user);
     }
 
     //PUT
@@ -81,8 +93,8 @@ public class UserController {
     @PutMapping
     public User changeUser(@Valid @RequestBody User user) {
         userValidate(user);
-
-        return userStorage.changeUser(user);
+        log.info("Change user: OK");
+        return userStorage.change(user);
     }
 
     private void userValidate(User user) {
@@ -101,6 +113,7 @@ public class UserController {
         }
 
         if (user.getId() < 0) {
+            log.error("ID < 0");
             throw new IdException("ID < 0");
         }
     }
@@ -108,12 +121,14 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleBirthdayException(DateException e) {
+        log.error(e.getMessage());
         return e.getMessage();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleIdException(IdException e) {
+        log.error(e.getMessage());
         return e.getMessage();
     }
 
