@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.exception;
+package ru.yandex.filmorate.exception;
 
 public class IdException extends RuntimeException {
     public IdException(String s) {

@@ -1,19 +1,13 @@
-package ru.yandex.practicum.filmorate;
-import com.google.gson.Gson;
-import ru.yandex.practicum.filmorate.model.Film;
+package ru.yandex.filmorate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.Duration;
-import java.time.LocalDate;
+import ru.yandex.filmorate.model.User;
 
 @SpringBootApplication
 public class FilmorateApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FilmorateApplication.class, args);
-
 	}
-
 }
