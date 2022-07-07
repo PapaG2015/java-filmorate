@@ -42,3 +42,4 @@ SELECT friendship_status
 FROM friends
 WHERE user_id = 10 AND friend_id = 3
 ```
+6. для отправки на проверку
