@@ -1,19 +1,24 @@
-package ru.yandex.filmorate.storage.film;
+package ru.yandex.filmorate.dao;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.filmorate.model.Film;
 import ru.yandex.filmorate.model.Genre;
 import ru.yandex.filmorate.model.MPA;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface FilmStorage {
-
+public interface FilmDao {
     Optional<Film> get(int id);
 
+    void toLike(int filmID, int userID);
+
+    void toDislike(int filmID, int userID);
+
     Collection<Film> getAll();
+
+    List<Film> getRating(int filmAmount);
 
     Optional<Film> create(Film film);
 

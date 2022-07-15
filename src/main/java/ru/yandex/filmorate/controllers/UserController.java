@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.filmorate.exception.DateException;
 import ru.yandex.filmorate.exception.IdException;
+import ru.yandex.filmorate.service.user.UserDbService;
 import ru.yandex.filmorate.service.user.UserService;
 import ru.yandex.filmorate.storage.user.UserStorage;
 import ru.yandex.filmorate.model.User;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Data
@@ -23,60 +25,60 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserStorage userStorage;
+    private UserStorage userDbStorage;
     @Autowired
-    private UserService userService;
+    private UserDbService userDbService;
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") int id) {
+    public Optional<User> getUser(@PathVariable("id") int id) {
         if (id <= 0) {
             log.error("ID must be > 0");
             throw new IdException("ID must be > 0");
         } else {
             log.info("Get film: OK");
-            return userStorage.get(id);
+            return userDbStorage.get(id);
         }
     }
 
     //добавление в друзья
     @PutMapping("/{id}/friends/{friendId}")
-    public User addFriend(@PathVariable("id") int id, @PathVariable("friendId") int friendId) {
+    public Optional<User> addFriend(@PathVariable("id") int id, @PathVariable("friendId") int friendId) {
         if (friendId <= 0) {
             log.error("ID must be > 0");
             throw new IdException("ID must be > 0");
         } else {
-            userService.addFriend(id, friendId);
+            userDbService.addFriend(id, friendId);
             log.info("Add friend: OK");
-            return userStorage.get(id);
+            return userDbStorage.get(id);
         }
     }
 
     //удаление из друзей
     @DeleteMapping("/{id}/friends/{friendId}")
-    public User deleteFriend(@PathVariable("id") int id, @PathVariable("friendId") int friendId) {
-        userService.deleteFriend(id, friendId);
+    public Optional<User> deleteFriend(@PathVariable("id") int id, @PathVariable("friendId") int friendId) {
+        userDbService.deleteFriend(id, friendId);
         log.info("Delete friend: OK");
-        return userStorage.get(id);
+        return userDbStorage.get(id);
     }
 
     //возвращаем список пользователей, являющихся его друзьями
     @GetMapping("/{id}/friends")
     public List<User> getMyFriends(@PathVariable("id") int id) {
         log.info("Get my friends: OK");
-        return userService.getMyFriends(id);
+        return userDbService.getMyFriends(id);
     }
 
     //список друзей, общих с другим пользователем
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable("id") int id, @PathVariable("otherId") int otherId) {
         log.info("Get common friends: OK");
-        return userService.getCommonFriends(id, otherId);
+        return userDbService.getCommonFriends(id, otherId);
     }
 
     @GetMapping
     public Collection<User> getAllUsers() {
         log.info("Get all users: OK");
-        return userStorage.getAll();
+        return userDbStorage.getAll();
     }
 
     //POST
@@ -85,7 +87,7 @@ public class UserController {
     public User createUser(@Valid @RequestBody User user) {
         userValidate(user);
         log.info("Create user: OK");
-        return userStorage.create(user);
+        return userDbStorage.create(user);
     }
 
     //PUT
@@ -94,7 +96,7 @@ public class UserController {
     public User changeUser(@Valid @RequestBody User user) {
         userValidate(user);
         log.info("Change user: OK");
-        return userStorage.change(user);
+        return userDbStorage.change(user);
     }
 
     private void userValidate(User user) {

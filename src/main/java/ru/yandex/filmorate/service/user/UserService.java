@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    @Autowired
+    /*@Autowired
     private UserStorage userStorage;
 
     public void addFriend(int id, int friendId) {
@@ -48,5 +48,5 @@ public class UserService {
         } catch (NullPointerException e) {
             return commonFriends;
         }
-    }
+    }*/
 }

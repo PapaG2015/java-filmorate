@@ -1,17 +1,15 @@
 package ru.yandex.filmorate.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
-//@Builder
 public class User {
 
     private int id;
@@ -22,5 +20,11 @@ public class User {
     private String login;
     private String name;
     private LocalDate birthday;
-    private Set<Integer> friends = new HashSet<>();
+    //private Map<Integer, Boolean> friends = new HashMap<>();
+
+    public User(int id, String name, LocalDate birthday) {
+        this.id = id;
+        this.name = name;
+        this.birthday = birthday;
+    }
 }
