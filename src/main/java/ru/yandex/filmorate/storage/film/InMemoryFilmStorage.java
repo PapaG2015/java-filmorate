@@ -9,8 +9,9 @@ import java.util.*;
 
 @Component
 @Slf4j
-public class InMemoryFilmStorage implements FilmStorage {
-    private int count = 0;
+public class InMemoryFilmStorage  {
+
+    /*private int count = 0;
 
     private Map<Integer, Film> films = new HashMap<>();
     private Set<Film> filmSet = new TreeSet<>((f1, f2) -> {
@@ -77,5 +78,5 @@ public class InMemoryFilmStorage implements FilmStorage {
 
         films.remove(id);
         filmSet.remove(film);
-    }
+    }*/
 }

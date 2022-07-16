@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class InMemoryUserStorage implements UserStorage {
-    private int count = 0;
+public class InMemoryUserStorage  {
+    /*private int count = 0;
 
     private Map<Integer, User> users = new HashMap<>();
 
@@ -64,5 +64,5 @@ public class InMemoryUserStorage implements UserStorage {
     public void delete(User user) {
         int id = user.getId();
         users.remove(id);
-    }
+    }*/
 }
