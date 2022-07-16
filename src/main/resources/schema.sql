@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS ratings (
 );
 
 CREATE TABLE IF NOT EXISTS users (
-    id int REFERENCES logins(id),
+    id int REFERENCES logins(id) ON DELETE CASCADE,
     name varchar,
     birthday date,
     CONSTRAINT users_pk PRIMARY KEY (id)
@@ -61,6 +61,6 @@ CREATE TABLE IF NOT EXISTS friends (
 
 CREATE TABLE IF NOT EXISTS emails (
    email varchar,
-   id int REFERENCES users(id),
+   id int REFERENCES users(id) ON DELETE CASCADE,
    CONSTRAINT emails_pk PRIMARY KEY (email)
 );

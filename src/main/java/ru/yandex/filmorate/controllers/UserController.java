@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.filmorate.exception.DateException;
 import ru.yandex.filmorate.exception.IdException;
 import ru.yandex.filmorate.service.user.UserDbService;
-import ru.yandex.filmorate.service.user.UserService;
 import ru.yandex.filmorate.storage.user.UserStorage;
 import ru.yandex.filmorate.model.User;
 

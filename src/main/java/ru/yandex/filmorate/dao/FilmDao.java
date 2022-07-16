@@ -12,10 +12,6 @@ import java.util.Set;
 public interface FilmDao {
     Optional<Film> get(int id);
 
-    void toLike(int filmID, int userID);
-
-    void toDislike(int filmID, int userID);
-
     Collection<Film> getAll();
 
     List<Film> getRating(int filmAmount);

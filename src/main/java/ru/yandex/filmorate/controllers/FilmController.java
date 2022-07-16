@@ -8,8 +8,8 @@ import ru.yandex.filmorate.exception.DateException;
 import ru.yandex.filmorate.exception.IdException;
 import ru.yandex.filmorate.model.Film;
 import ru.yandex.filmorate.service.film.FilmDbService;
-import ru.yandex.filmorate.service.film.FilmService;
 import ru.yandex.filmorate.storage.film.FilmStorage;
+import ru.yandex.filmorate.storage.like.LikeStorage;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -26,6 +26,8 @@ public class FilmController {
     private FilmStorage filmDbStorage;
     @Autowired
     private FilmDbService filmDbService;
+    @Autowired
+    private LikeStorage likeStorage;
 
     @GetMapping("/{id}")
     public Optional<Film> getFilm(@PathVariable("id") int id) {
@@ -41,7 +43,7 @@ public class FilmController {
     //пользователь ставит лайк фильму
     @PutMapping("/{id}/like/{userId}")
     public Optional<Film> toLike(@PathVariable("id") int id, @PathVariable("userId") int userId) {
-        filmDbService.toLike(id, userId);
+        likeStorage.toLike(id, userId);
         log.info("Like film: OK");
         return filmDbStorage.get(id);
     }
@@ -53,7 +55,7 @@ public class FilmController {
             log.error("ID must be > 0");
             throw new IdException("ID must be > 0");
         } else {
-            filmDbService.toDislike(id, userId);
+            likeStorage.toDislike(id, userId);
             log.info("Delete like film: OK");
             return filmDbStorage.get(id);
         }

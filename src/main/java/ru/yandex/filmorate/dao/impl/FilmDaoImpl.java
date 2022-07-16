@@ -61,18 +61,6 @@ public class FilmDaoImpl implements FilmDao {
     }
 
     @Override
-    public void toLike(int filmID, int userID) {
-        String sqlQuery = "insert into likes(film_id, user_id) " + "values (?, ?)";
-        jdbcTemplate.update(sqlQuery, filmID, userID);
-    }
-
-    @Override
-    public void toDislike(int filmID, int userID) {
-        String sqlQuery = "delete from likes where film_id = ? and user_id = ?";
-        jdbcTemplate.update(sqlQuery, filmID, userID);
-    }
-
-    @Override
     public Collection<Film> getAll() {
         String sql = "select * from films "  + "LEFT OUTER JOIN ratings ON films.rating = ratings.id";
 

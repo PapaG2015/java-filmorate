@@ -17,14 +17,6 @@ public class FilmDbService {
     @Autowired
     private FilmDao filmDoa;
 
-    public void toLike(int filmID, int userID) {
-        filmDoa.toLike(filmID, userID);
-    }
-
-    public void toDislike(int filmID, int userID) {
-        filmDoa.toDislike(filmID, userID);
-    }
-
     public List<Film> getRating(int filmAmount) {
         return filmDoa.getRating(filmAmount);
     }
